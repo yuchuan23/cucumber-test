@@ -76,7 +76,11 @@ task cucumber() {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             // glue needs package name of step definitions
-            args = ['--plugin', 'pretty', '--glue', 'cucumber', 'src/test/resources', '--tags', tags]
+            //args = ['--plugin', 'pretty', '--glue', 'cucumber', 'src/test/resources', '--tags', tags]
+            args = ['--plugin', 'pretty', '--glue', 'cucumber', 'src/test/resources']
+            if (project.hasProperty('tags')) {
+                args += ['--tags', tags]
+            }
         }
     }
 }

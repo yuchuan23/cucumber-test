@@ -12,3 +12,7 @@ make cucumber tags=@player
 ```
 make cucumber tags=@player1
 ```
+* 多個tags
+```
+make cucumber tags="@player1 or @player2"
+```

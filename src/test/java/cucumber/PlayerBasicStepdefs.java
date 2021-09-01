@@ -42,7 +42,7 @@ public class PlayerBasicStepdefs {
         logger.info("current world player: {}", this.world.context.get("player"));
     }
 
-    @When("I levelp once")
+    @When("I levelup once")
     public void i_levelup_once() {
         Player p = (Player) this.world.context.get("player");
         p.levelUp();
