@@ -1,6 +1,7 @@
-package cucumber;
+package cucumber.player;
 
 import cucumber.beans.*;
+import cucumber.World;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
