@@ -23,6 +23,12 @@ repositories {
 }
 
 dependencies {
+    // jackson
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
+
+    // ning async http client
+    implementation 'org.asynchttpclient:async-http-client:2.12.3'
+
     // Apache Commons lang3
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
@@ -81,6 +87,8 @@ task cucumber() {
             if (project.hasProperty('tags')) {
                 args += ['--tags', tags]
             }
+            // pass all system properties
+            systemProperties System.getProperties()
         }
     }
 }
