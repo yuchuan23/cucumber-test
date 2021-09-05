@@ -13,6 +13,9 @@ public class World {
 
     public class Context {
         private final Map<String, Object> data = new HashMap<>();
+        public static final String LAST_RESPONSE_STATUS = "last_response_status";
+        public static final String LAST_RESPONSE_BODY = "last_response_body";
+        public static final String LAST_RESPONSE_JSON = "last_response_json";
 
         public Object get(String key) {
             return data.get(key);
