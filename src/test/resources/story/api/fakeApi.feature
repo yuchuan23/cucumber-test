@@ -24,8 +24,21 @@ Feature: to test a fake api
         Then The status code of last response should be 200
         Then The size of "" of last response should be "50"
         Then The size of "" of last response should be larger than "10"
+        Then The "/0/id" of last response should be "1"
 
         @fakeApi @fakeGet @fakeList
+        Examples:
+          | albumId |
+          | 1       |
+
+    Scenario Outline: to test get the previous data
+        When I make a "GET" request to "/photos?albumId=<albumId>"
+        Then The status code of last response should be 200
+        When I make a "GET" request to "/photos/${/0/id}"
+        Then The "/id" of last response should be "1"
+        Then The "/title" of last response should be "accusamus beatae ad facilis cum similique qui sunt"
+
+        @fakeApi @fakeGet @fakePrevious
         Examples:
           | albumId |
           | 1       |
@@ -41,7 +54,6 @@ Feature: to test a fake api
           | _     |
 
     Scenario Outline: to test fake put api
-        Given A non login user
         When I make a "PUT" request to "/photos/<id>" and payload='{"title": "photo title <id>"}'
         Then The status code of last response should be 200
 
@@ -52,7 +64,6 @@ Feature: to test a fake api
           | 2     |
 
     Scenario Outline: to test fake delete api
-        Given A login user
         When I make a "DELETE" request to "/photos/<id>"
         Then The status code of last response should be 200
 

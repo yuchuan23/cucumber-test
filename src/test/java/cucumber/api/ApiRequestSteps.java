@@ -25,6 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ApiRequestSteps {
     private static final Logger logger = LoggerFactory.getLogger(ApiRequestSteps.class);
     private static final int DEFAULT_TIMEOUT_MS = 5000;
@@ -59,21 +62,25 @@ public class ApiRequestSteps {
 
     @When("I make a {string} request to {string}")
     public void i_make_a_request_to(String method, String path) {
+        path = handleVariables(path);
         executeRequest(client, method, path, null, 0);
     }
 
     @When("I make a {string} request to {string} and payload={string}")
     public void i_make_a_request_to_and_payload(String method, String path, String payload) {
+        path = handleVariables(path);
         executeRequest(client, method, path, payload, 0);
     }
 
     @When("I make a {string} request to {string} and retry={int}")
     public void i_make_a_request_to(String method, String path, int maxRetry) {
+        path = handleVariables(path);
         executeRequest(client, method, path, null, maxRetry);
     }
 
     @When("I make a {string} request to {string} and payload={string} and retry={int}")
     public void i_make_a_request_to_and_payload(String method, String path, String payload, int maxRetry) {
+        path = handleVariables(path);
         executeRequest(client, method, path, payload, maxRetry);
     }
 
@@ -139,5 +146,30 @@ public class ApiRequestSteps {
             logger.error("Failed to parse to JsonNode: ", e);
             return null;
         }
+    }
+
+    // if path contains ${jsonPointer} like ${/id/0}，replace it with the last response data
+    private String handleVariables(String path) {
+        logger.info("to handle Variables: {}", path);
+        String regex = "\\$\\{(?<jsonPointer>[a-zA-Z0-9/_\\.]+)\\}";
+        JsonNode lastResponse = (JsonNode) this.world.context.get(World.Context.LAST_RESPONSE_JSON);
+        if (null == lastResponse) {
+            logger.info("no lastResponse, skipped handleVariables");
+            return path;
+        }
+
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(path);
+        while(m.find()) {
+            String jsonPointer = m.group("jsonPointer");
+            String value = lastResponse.at(jsonPointer).asText();
+            if (null == value) {
+                value = "{not_found_value}";
+            }
+
+            path = path.replace(m.group(), value);
+        }
+
+        return path;
     }
 }
