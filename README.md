@@ -39,6 +39,14 @@ code 的部分分為
     *  string: 判斷某個欄位的值是否等於或不等於某值，這裡有個特殊值 "empty"，代表欄位是否空
     *  array: 判斷Json array的長度是否等於某值或大於某值
 
+fake api的部分使用
+- 照片列表: [http://jsonplaceholder.typicode.com/photos](http://jsonplaceholder.typicode.com/photos)
+- by 照片id: [https://jsonplaceholder.typicode.com/photos/1](https://jsonplaceholder.typicode.com/photos/1)
+- by albumId: [http://jsonplaceholder.typicode.com/photos?albumId=5](http://jsonplaceholder.typicode.com/photos?albumId=5)
+- POST [http://jsonplaceholder.typicode.com/photos](http://jsonplaceholder.typicode.com/photos)
+- PUT [http://jsonplaceholder.typicode.com/photos/1](http://jsonplaceholder.typicode.com/photos/1)
+- DELETE [http://jsonplaceholder.typicode.com/photos/1](http://jsonplaceholder.typicode.com/photos/1)
+
 ## Run
 * 跑fakeApi全部測試
 ```
